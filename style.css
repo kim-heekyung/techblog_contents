@@ -1,0 +1,487 @@
+/* =========================
+   RESET
+========================= */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body{
+  height: 100%;
+}
+
+body{
+  font-family: monospace;
+  color: #111;
+}
+
+/* 링크: 방문/클릭/호버 색 변화 없애기 */
+a,
+a:visited,
+a:hover,
+a:active,
+a:focus{
+  color: #111;
+  text-decoration: none;
+}
+
+/* =========================
+   4-PANEL LAYOUT (2x2)
+   좌상: 제목 / 우상: 설명
+   좌하: 네비 / 우하: 콘텐츠
+========================= */
+.layout{
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 350px 1fr; /* 좌측 폭 */
+  grid-template-rows: 110px 1fr;    /* 상단 높이 */
+}
+
+/* 공통 패널 */
+.panel{
+  border: 1px solid rgba(0,0,0,0.35);
+}
+
+/* 좌상(제목) */
+.panel-title{
+  background-color: #bcbc8f;
+  border-right: 1px solid rgba(0,0,0,0.35);
+  border-bottom: 1px solid rgba(0,0,0,0.35);
+
+  display: flex;
+  align-items: center;   /* 세로 중앙 */
+  padding: 0 30px;       /* 좌우 여백만 유지 */
+}
+
+.nav-title{
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* 우상(설명) */
+.panel-desc{
+  background-color: #8fb1bc;
+  border-bottom: 1px solid rgba(0,0,0,0.35);
+
+  display: flex;
+  align-items: center;   /* 세로 중앙 */
+  padding: 0 40px;
+}
+
+.desc{
+  font-size: 13px;
+  line-height: 1.7;
+  max-width: 900px;
+  opacity: 0.35; 
+}
+
+.panel-nav{
+  padding: 20px 30px 80px 30px;  /* 하단 여백 확보 (기존 30px → 80px 정도) */
+  background-color: #b2b27f;;
+  overflow-y: auto;
+  border-right: 1px solid rgba(0,0,0,0.35);
+  position: relative;  /* 기준 컨테이너 */
+}
+
+
+/* 우하(콘텐츠) */
+.panel-posting{
+  padding: 20px 40px 40px 40px;
+  background-color: #7fa3ad;
+  overflow-y: auto;
+}
+
+/* (구버전 호환) 혹시 HTML에 .posting만 남아있어도 동작하도록 */
+.posting{
+  overflow-y: auto;
+}
+
+/* =========================
+   NAV (3-DEPTH)
+========================= */
+.nav-list{ list-style: none; }
+
+.nav-section{
+  margin-top: 15px;
+  margin-bottom: 34px;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.nav-section-title{
+  font-weight: 700;
+}
+
+.nav-sub{
+  list-style: none;
+  margin-top: 15px;
+  margin-left: 35px;
+}
+
+.nav-subsection{
+  margin-bottom: 14px;
+}
+
+.nav-subtitle{
+  display: block;
+  margin: 15px 0 6px 0;
+  font-size: 15px;
+}
+
+.nav-third{
+  list-style: none;
+  margin-left: 18px;
+}
+
+.nav-third li{
+  margin-left: 15px;
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+.nav-third a{
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 0; 
+}
+
+.nav-third a:hover{
+  background: rgba(0,0,0,0.06);
+}
+
+
+.nav-third a:focus{
+  outline: none;
+}
+
+/* 현재 선택된 글 하이라이트 */
+body:has(#viz-1:target)   .nav-third a[href="#viz-1"],
+body:has(#viz-2:target)   .nav-third a[href="#viz-2"],
+body:has(#viz-3:target)   .nav-third a[href="#viz-3"],
+body:has(#viz-4:target)   .nav-third a[href="#viz-4"],
+body:has(#viz-5:target)   .nav-third a[href="#viz-5"],
+body:has(#viz-6:target)   .nav-third a[href="#viz-6"],
+body:has(#viz-7:target)   .nav-third a[href="#viz-7"],
+body:has(#viz-8:target)   .nav-third a[href="#viz-8"],
+body:has(#mkt-1:target)   .nav-third a[href="#mkt-1"],
+body:has(#mkt-2:target)   .nav-third a[href="#mkt-2"],
+body:has(#trade-1:target) .nav-third a[href="#trade-1"]{
+  background: rgba(0,0,0,0.15);
+  border: 1px solid rgba(0,0,0,0.25);
+  text-decoration: none;
+}
+
+/* =========================
+   CONTENT (hash target)
+   - 기본: 아무 글도 선택 안 하면 우하단은 '비어있음'
+========================= */
+
+.content{
+  display: none;
+  height: auto;
+  margin-top: 15px;
+
+  max-width: 860px;           /* 기존 820보다 약간 여유 */
+  padding: 30px 40px;         /* 내부 여백 */
+
+  background: rgba(255,255,255,0.28);
+  border: 1px solid rgba(0,0,0,0.12);
+  /*background: rgba(255,255,255,0.35);  /* 살짝 밝은 레이어 */*/
+  /*border: 1px solid rgba(0,0,0,0.15);*/
+}
+
+
+/* 선택된 글만 표시 */
+.content:target{
+  display: block;
+}
+
+.sub-text{
+  font-size: 12px;
+  opacity: 0.6;
+  line-height: 1.7;
+}
+
+/* 타이포 */
+.post-title{
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  max-width: 820px;
+}
+
+.soft-hr{
+  border: none;
+  height: 1px;
+  background: rgba(0,0,0,0.25);
+  margin: 12px 0 18px 0;
+  max-width: 820px;
+}
+
+.content h3{
+  margin-top: 22px;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.content h4{
+  margin-top: 18px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.content p{
+  margin-bottom: 12px;
+  line-height: 1.85;
+  max-width: 820px;
+}
+
+
+.list li{
+  margin-bottom: 8px;
+  line-height: 1.75;
+}
+
+.list.depth1{
+  list-style: disc;
+  padding-left: 28px;
+  margin: 10px 0 14px 0;
+  max-width: 820px;
+}
+
+.list.depth2{
+  list-style: disc;
+  padding-left: 35px;
+  margin: 10px 0 14px 0;
+  max-width: 820px;
+  /*font-size: 15px;*/
+}
+
+.list.depth2 li{
+  margin-bottom:8px;
+  margin-left: 15px;
+  line-height: 1.75;
+}
+
+.list.depth3 {
+  list-style: disc;
+  padding-left: 45px;
+  margin: 10px 0 14px 0;
+  max-width: 820px;
+}
+
+.list.depth3 li{
+  margin-bottom: 0px;
+
+}
+
+
+/* 이미지 */
+.post-image{
+  display: block;
+  width: 70%;
+  max-width: 420px;
+  height: auto;
+}
+
+.img-large{
+  width: 90%;
+  max-width: 800px;
+}
+
+.img-small{
+  width: 90%;
+  max-width: 300px;
+}
+
+.img-small-small{
+  width: 90%;
+  max-width: 150px;
+}
+
+/* 캡션 */
+.caption{
+  max-width: 820px;
+  margin-left: 3px;
+  font-size: 10px;
+  line-height: 1.6;
+  opacity: 0.75;
+  font-style: italic;
+}
+
+/* =========================
+   NAV DETAILS (3depth toggle)
+========================= */
+
+.nav-details summary{
+  cursor: pointer;
+  font-size: 15px;
+  padding: 6px 8px 6px 22px;
+  user-select: none;
+  list-style: none;
+  position: relative;
+}
+
+.nav-details summary:hover{
+  background: rgba(0,0,0,0.06);
+}
+
+/* 기본 브라우저 마커 제거 */
+.nav-details summary::-webkit-details-marker{
+  display: none;
+}
+
+/* 커스텀 화살표 */
+.nav-details summary::before{
+  content: "▶";
+  position: absolute;
+  left: 6px;
+  top: 4px;
+  font-size: 15px;
+  transition: transform 0.2s ease;
+}
+
+/* 열렸을 때 회전 */
+.nav-details[open] summary::before{
+  transform: rotate(90deg);
+}
+
+/* =========================
+   EMPTY STATE PLACEHOLDER
+========================= */
+
+/* 우하단 영역을 기준 컨테이너로 설정 */
+.panel-posting{
+  position: relative;
+}
+
+/* 아무 content도 target되지 않았을 때 */
+.panel-posting:not(:has(.content:target))::after{
+  content: "좌측 메뉴를 선택하세요";
+  position: absolute;
+
+  /* 1) 높이: 좌측 네비 첫 메뉴 시작 높이와 맞춤
+     - panel-nav의 padding-top이 20px
+     - panel-posting의 padding-top도 20px (현재 동일)
+     => 그래서 top: 20px + (첫줄이 시작되는 보정값) */
+  top: 20px;
+
+  /* 2) 들여쓰기: 우상단 설명 텍스트 시작 위치와 맞춤
+     - 우측 상단 panel-desc padding-left = 40px
+     - 우측 하단 panel-posting padding-left = 40px
+     => 그래서 left: 40px */
+  left: 40px;
+
+  transform: none;
+
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+
+/* =========================
+   SCROLLBAR (Chrome/Safari)
+========================= */
+.panel-posting{
+  scrollbar-gutter: stable;
+}
+
+.panel-posting::-webkit-scrollbar{
+  width: 14px;
+}
+
+.panel-posting::-webkit-scrollbar-track{
+  background: rgba(255,255,255,0.22);
+  border-left: 1px solid rgba(0,0,0,0.18);
+}
+
+.panel-posting::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,0.35);
+  border: 2px solid rgba(255,255,255,0.35);
+  border-radius: 0;
+}
+
+.panel-posting::-webkit-scrollbar-thumb:hover{
+  background: rgba(0,0,0,0.5);
+}
+
+
+/* =========================
+   NAV FOOTNOTE
+========================= */
+
+.nav-footnote{
+  position: absolute;
+  bottom: 20px;   /* 패널 하단과 간격 */
+  left: 30px;     /* panel-nav padding-left와 동일 */
+  right: 30px;    /* 좌우 균형 */
+
+  font-size: 12px;
+  opacity: 0.45;
+  line-height: 1.6;
+}
+
+.apdx {
+  font-size: 12px;
+  margin-left: 3px;
+  color: grey;
+}
+
+
+/* =========================
+   SIDE NOTE (우측 여백 메모)
+   - 콘텐츠 박스(.content) 옆 간격 고정
+========================= */
+
+.side-note{
+  position: absolute;
+  top: 40px;
+
+  /* ✅ 콘텐츠 박스 오른쪽 끝(=40px padding + 860px max-width) 기준으로 붙이기 */
+  left: calc(40px + 860px + 40px); /* (패널 패딩) + (콘텐츠 폭) + (원하는 간격) */
+
+  width: 240px;
+  padding: 20px;
+
+  background: rgba(255,255,255,0.28);
+  border: 1px solid rgba(0,0,0,0.12);
+
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* =========================
+   RESPONSIVE (작은 화면)
+   - 모바일에선 세로로 쌓이게
+========================= */
+@media (max-width: 900px){
+  .layout{
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 260px 1fr;
+    height: 100vh;
+  }
+
+@media (max-width: 1300px){
+  .side-note{
+    display: none;
+  }
+}
+
+  .panel-title,
+  .panel-desc{
+    border-right: 1px solid rgba(0,0,0,0.35);
+  }
+
+  .panel-nav{
+    border-right: 1px solid rgba(0,0,0,0.35);
+  }
+}
+
+
+
+
+
