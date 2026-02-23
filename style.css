@@ -441,17 +441,38 @@ body:has(#trade-1:target) .nav-third a[href="#trade-1"]{
   position: absolute;
   top: 40px;
 
-  /* ✅ 콘텐츠 박스 오른쪽 끝(=40px padding + 860px max-width) 기준으로 붙이기 */
   left: calc(40px + 860px + 40px); /* (패널 패딩) + (콘텐츠 폭) + (원하는 간격) */
 
-  width: 240px;
+  width: 200px;
+  height: 50px;
   padding: 20px;
+
+  display: flex;
+  align-items: center;   /* 세로 가운데 
+  /*justify-content: center; /* 가로 가운데 (원하면) */
 
   background: rgba(255,255,255,0.28);
   border: 1px solid rgba(0,0,0,0.12);
 
   font-size: 12px;
   line-height: 1.7;
+}
+
+.side-note a {
+  color: blue;
+  text-decoration: underline;
+}
+
+.side-note a:visited {
+  color: darkblue;
+}
+
+.side-note a:hover {
+  color: darkblue;
+}
+
+.side-note p {
+  margin: 0;
 }
 
 /* =========================
